@@ -60,7 +60,7 @@ class QueryBuilder {
   }
 
   orderBy(field: string, direction: 'ASC' | 'DESC' = 'ASC'): QueryBuilder {
-    this.orderFields.push(`order by ${field} ${direction}`);
+    this.orderFields.push(`${field} ${direction}`);
     return this;
   }
 
@@ -71,8 +71,20 @@ class QueryBuilder {
 
   execute(): string {
     // Select id, name, email from users where age > 18 and country = 'Cri' order by name ASC limit 10;
-    const fields = this.fields.length > 0 ? this.fields.join(', ') : 
-    return `Select id, name, email from ${this.table} where age > 18 and country = 'Cri' order by name ASC limit ${this.limitCount};`
+    const fields = this.fields.length > 0 ? this.fields.join(', ') : '*';
+
+    const whereClause = 
+    this.conditions.length > 0
+      ? `WHERE ${this.conditions.join(' AND ')}`
+      : ''
+
+    const orderByClause =  this.orderFields.length > 0 ?  
+    `ORDER BY ${ this.orderFields.join(', ')}`
+    : ''; 
+
+    const limitClause = this.limitCount ? `LIMIT ${ this.limitCount}` : '';
+
+    return `SELECT ${fields} FROM ${this.table} ${whereClause} ${orderByClause} ${limitClause};`
     
   }
 }
