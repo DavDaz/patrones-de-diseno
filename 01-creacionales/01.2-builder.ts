@@ -38,6 +38,14 @@ import { COLORS } from '../helpers/colors.ts';
 
 //! Solución
 
+interface IQueryBuilder{
+  select(...fields: string[]): IQueryBuilder;
+  where(condition: string): IQueryBuilder;
+  orderBy(field: string, direction: 'ASC' | 'DESC'): IQueryBuilder;
+  limit(limitCount?: number): IQueryBuilder;
+  execute(): string; 
+}
+
 class Query {
   private table: string;
   private fields: string[] = [];
@@ -81,7 +89,7 @@ class Query {
   }
 }
 
-class QueryBuilder {
+class QueryBuilder implements IQueryBuilder {
   private query: Query;
 
   constructor(table: string) {
@@ -98,7 +106,7 @@ class QueryBuilder {
     return this;
   }
 
-  orderBy(field: string, direction: 'ASC' | 'DESC' = 'ASC'): QueryBuilder {
+  orderBy(field: string, direction: 'ASC' | 'DESC'): QueryBuilder {
     this.query.addOrderField(field, direction);
     return this;
   }

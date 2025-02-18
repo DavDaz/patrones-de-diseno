@@ -12,3 +12,11 @@
  * https://refactoring.guru/es/design-patterns/factory-method
  *
  */
+
+
+interface Hamburger {
+    prepare(): void;
+}
+
+// ChickenHamburger
+// BeefHamburger
