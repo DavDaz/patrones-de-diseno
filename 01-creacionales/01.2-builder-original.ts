@@ -70,32 +70,39 @@ class QueryBuilder {
   }
 
   execute(): string {
+    const queryParts: string[] = [];
     // Select id, name, email from users where age > 18 and country = 'Cri' order by name ASC limit 10;
+    // SELECT campos
     const fields = this.fields.length > 0 ? this.fields.join(', ') : '*';
+    queryParts.push(`SELECT ${fields}`);
+    // FROM tabla
 
-    const whereClause = 
-    this.conditions.length > 0
-      ? `WHERE ${this.conditions.join(' AND ')}`
-      : ''
+    queryParts.push(`FROM ${this.table}`);
+    // WHERE validar si hay, y si si hay agregar con join
+    if(this.conditions.length > 0){
+      const whereClause = `WHERE ${this.conditions.join(' AND ')}`
+      queryParts.push(whereClause)
+    }
 
-    const orderByClause =  this.orderFields.length > 0 ?  
-    `ORDER BY ${ this.orderFields.join(', ')}`
-    : ''; 
+    // ORDER BY campo y direccion agregar con coma y validar si existe
+    if(this.orderFields.length > 0){
+     queryParts.push(`ORDER BY ${ this.orderFields.join(', ')}`); 
+    }
+    // LIMIT validar si existe de lo contrario agregar 
+    if(this.limitCount !== undefined){
+      queryParts.push(this.limitCount ? `LIMIT ${ this.limitCount}` : '');
+    }
 
-    const limitClause = this.limitCount ? `LIMIT ${ this.limitCount}` : '';
-
-    return `SELECT ${fields} FROM ${this.table} ${whereClause} ${orderByClause} ${limitClause};`
+    return queryParts.join(' ') + ';';
     
   }
 }
 
 function main() {
   const usersQuery = new QueryBuilder('users')
-    .select('id', 'name', 'email')
+    .select()
     .where('age > 18')
     .where("country = 'Cri'") // Esto debe de hacer una condición AND
-    .orderBy('name', 'ASC')
-    .limit(10)
     .execute();
 
   console.log('%cConsulta:\n', COLORS.red);
