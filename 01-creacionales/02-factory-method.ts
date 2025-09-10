@@ -89,3 +89,52 @@ function main() {
 }
 
 main();
+
+/* Diagrama UML 
+ 
+ @startuml
+interface Vehiculo{
+    describir();
+}
+
+class Auto {
+}
+
+class Moto{
+}
+
+class Bicicleta{
+}
+
+Vehiculo <|.. Auto
+Vehiculo <|.. Moto
+Vehiculo <|.. Bicicleta
+
+abstract class VehiculoFactory{
+    abstract crear(): Vehiculo;
+    solicitar(): void;
+}
+
+class AutoFactory extends VehiculoFactory{
+    crear(): Vehiculo;
+}
+
+class MotoFactory extends VehiculoFactory{
+    crear(): Vehiculo;
+}
+
+class BicicletaFactory extends VehiculoFactory{
+    creat(): Vehiculo;
+}
+
+VehiculoFactory ..> Vehiculo
+
+class main{
+    let vehiculoFactory: VehiculoFactory;
+    const vehiculoTipo: string;
+    selectVehiculo(): void;
+}
+
+main ..> VehiculoFactory
+@enduml
+*/
