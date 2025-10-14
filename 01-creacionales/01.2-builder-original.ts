@@ -11,7 +11,7 @@
  * * que lo componen.
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 //! Tarea: crear un QueryBuilder para construir consultas SQL
 /**
@@ -50,16 +50,16 @@ class QueryBuilder {
   }
 
   select(...fields: string[]): QueryBuilder {
-    this.fields = fields
+    this.fields = fields;
     return this;
   }
 
   where(condition: string): QueryBuilder {
-      this.conditions.push(condition);
-      return this;
+    this.conditions.push(condition);
+    return this;
   }
 
-  orderBy(field: string, direction: 'ASC' | 'DESC' = 'ASC'): QueryBuilder {
+  orderBy(field: string, direction: "ASC" | "DESC" = "ASC"): QueryBuilder {
     this.orderFields.push(`${field} ${direction}`);
     return this;
   }
@@ -73,39 +73,38 @@ class QueryBuilder {
     const queryParts: string[] = [];
     // Select id, name, email from users where age > 18 and country = 'Cri' order by name ASC limit 10;
     // SELECT campos
-    const fields = this.fields.length > 0 ? this.fields.join(', ') : '*';
+    const fields = this.fields.length > 0 ? this.fields.join(", ") : "*";
     queryParts.push(`SELECT ${fields}`);
     // FROM tabla
 
     queryParts.push(`FROM ${this.table}`);
     // WHERE validar si hay, y si si hay agregar con join
-    if(this.conditions.length > 0){
-      const whereClause = `WHERE ${this.conditions.join(' AND ')}`
-      queryParts.push(whereClause)
+    if (this.conditions.length > 0) {
+      const whereClause = `WHERE ${this.conditions.join(" AND ")}`;
+      queryParts.push(whereClause);
     }
 
     // ORDER BY campo y direccion agregar con coma y validar si existe
-    if(this.orderFields.length > 0){
-     queryParts.push(`ORDER BY ${ this.orderFields.join(', ')}`); 
+    if (this.orderFields.length > 0) {
+      queryParts.push(`ORDER BY ${this.orderFields.join(", ")}`);
     }
-    // LIMIT validar si existe de lo contrario agregar 
-    if(this.limitCount !== undefined){
-      queryParts.push(this.limitCount ? `LIMIT ${ this.limitCount}` : '');
+    // LIMIT validar si existe de lo contrario agregar
+    if (this.limitCount !== undefined) {
+      queryParts.push(this.limitCount ? `LIMIT ${this.limitCount}` : "");
     }
 
-    return queryParts.join(' ') + ';';
-    
+    return queryParts.join(" ") + ";";
   }
 }
 
 function main() {
-  const usersQuery = new QueryBuilder('users')
+  const usersQuery = new QueryBuilder("users")
     .select()
-    .where('age > 18')
+    .where("age > 18")
     .where("country = 'Cri'") // Esto debe de hacer una condición AND
     .execute();
 
-  console.log('%cConsulta:\n', COLORS.red);
+  console.log("%cConsulta:\n", COLORS.red);
   console.log(usersQuery);
 }
 
