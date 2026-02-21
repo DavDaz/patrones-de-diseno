@@ -11,7 +11,7 @@
  * * que lo componen.
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 //! Tarea: crear un QueryBuilder para construir consultas SQL
 /**
@@ -38,12 +38,12 @@ import { COLORS } from '../helpers/colors.ts';
 
 //! Solución
 
-interface IQueryBuilder{
+interface IQueryBuilder {
   select(...fields: string[]): IQueryBuilder;
   where(condition: string): IQueryBuilder;
-  orderBy(field: string, direction: 'ASC' | 'DESC'): IQueryBuilder;
+  orderBy(field: string, direction: "ASC" | "DESC"): IQueryBuilder;
   limit(limitCount?: number): IQueryBuilder;
-  execute(): string; 
+  execute(): string;
 }
 
 class Query {
@@ -65,7 +65,7 @@ class Query {
     this.conditions.push(condition);
   }
 
-  addOrderField(field: string, direction: 'ASC' | 'DESC'): void {
+  addOrderField(field: string, direction: "ASC" | "DESC"): void {
     this.orderFields.push(`${field} ${direction}`);
   }
 
@@ -74,16 +74,16 @@ class Query {
   }
 
   build(): string {
-    const fields = this.fields.length > 0 ? this.fields.join(', ') : '*';
+    const fields = this.fields.length > 0 ? this.fields.join(", ") : "*";
     const whereClause =
       this.conditions.length > 0
-        ? `WHERE ${this.conditions.join(' AND ')}`
-        : '';
+        ? `WHERE ${this.conditions.join(" AND ")}`
+        : "";
     const orderByClause =
       this.orderFields.length > 0
-        ? `ORDER BY ${this.orderFields.join(', ')}`
-        : '';
-    const limitClause = this.limitCount ? `LIMIT ${this.limitCount}` : '';
+        ? `ORDER BY ${this.orderFields.join(", ")}`
+        : "";
+    const limitClause = this.limitCount ? `LIMIT ${this.limitCount}` : "";
 
     return `SELECT ${fields} FROM ${this.table} ${whereClause} ${orderByClause} ${limitClause};`;
   }
@@ -106,7 +106,7 @@ class QueryBuilder implements IQueryBuilder {
     return this;
   }
 
-  orderBy(field: string, direction: 'ASC' | 'DESC'): QueryBuilder {
+  orderBy(field: string, direction: "ASC" | "DESC"): QueryBuilder {
     this.query.addOrderField(field, direction);
     return this;
   }
@@ -122,16 +122,17 @@ class QueryBuilder implements IQueryBuilder {
 }
 
 function main() {
-  const usersQuery = new QueryBuilder('users')
-    .select('id', 'name', 'email')
-    .where('age > 18')
+  const usersQuery = new QueryBuilder("users")
+    .select("id", "name", "email")
+    .where("age > 18")
     .where("country = 'Cri'") // Esto debe de hacer una condición AND
-    .orderBy('name', 'ASC')
+    .orderBy("name", "ASC")
     .limit(10)
     .execute();
 
-  console.log('%cConsulta:\n', 'color: red');
+  console.log("%cConsulta:\n", "color: red");
   console.log(usersQuery);
+  console.log("test");
 }
 
 main();
@@ -161,3 +162,4 @@ main();
  * Esto significa que puedes usarla directamente en otros contextos si lo necesitas, 
  * sin depender del QueryBuilder.
  */
+
